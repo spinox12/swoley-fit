@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Generator from "./components/Generator";
+import Hero from "./components/Hero";
+import Workout from "./components/Workout";
+import { generateWorkout } from "./utils/functions";
 
 function App() {
+
+  const [workout,setWorkout]=useState(null);
+  const [poison,setPoison]=useState('individual');
+  const [muscles,setMuscles]=useState([]);
+  const [goal,setGoal]=useState('strength_power');
+
+  function updateWorkout(){
+
+    if(muscles.length<1)
+    {
+      return
+    }
+
+     const newWorkout= generateWorkout({poison,muscles,goal});
+     console.log(newWorkout);
+     setWorkout(newWorkout);
+
+     window.location.href='#workout';
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className='min-h-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950
+     text-white text-sm sm:text-base'>
+      <Hero/>
+      <Generator poison={poison} setPoison={setPoison} muscles={muscles} setMuscles={setMuscles} goal={goal} setGoal={setGoal} updateWorkout={updateWorkout}/>
+      {workout && (<Workout workout={workout}/>)}
+    </main>
   );
 }
 
